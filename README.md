@@ -54,30 +54,36 @@ A multi-agent food ordering platform with AI-powered chat, search, cart, orders,
 ### High-level
 
 ```
-┌─────────────────┐     ┌─────────────────┐     ┌──────────────────────────────────────────┐
-│  Customer App   │     │ Restaurant App   │     │           API Gateway (:3000)              │
-│  (Vite :5173)   │     │ (Vite :5174)     │     │  /v1/auth, /v1/chat, /v1/jobs, /v1/me,     │
-└────────┬────────┘     └────────┬────────┘     │  /v1/search/*, /v1/order-proxy/*, /v1/     │
-         │                        │              │  restaurants, /v1/orders, Swagger /api    │
-         └────────────────────────┴──────────────┴─────────────────────┬────────────────────┘
-                                                                        │
-         ┌──────────────────────────────────────────────────────────────┼───────────────────┐
+┌─────────────────┐     ┌─────────────────┐  
+│  Customer App   │     │ Restaurant App  │ 
+│  (Vite :5173)   │     │ (Vite :5174)    │ 
+└────────┬────────┘     └────────┬────────┘  
+         │                       │          
+         └───────────┬───────────┘
+    ┌──────────────────────────────────────────┐
+    │           API Gateway (:3000)            │
+    │  /v1/auth, /v1/chat, /v1/jobs, /v1/me,   │
+    │  /v1/search/*, /v1/order-proxy/*, /v1/   │
+    │  restaurants, /v1/orders, Swagger /api   │
+    └─────────────────────┬────────────────────┘
+                          │
+         ┌────────────────┼─────────────────────────────────────────────────────────────────┐
          │                              │                               │                   │
          ▼                              ▼                               ▼                   ▼
-┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
-│ Customer Svc    │  │ Restaurant Svc  │  │ Order Service    │  │ Workflow Service │  │ Search (gateway  │
-│ :3001           │  │ :3002           │  │ :3003            │  │ :3004            │  │ stub / service  │
-│ profile,        │  │ onboarding,     │  │ cart, checkout,   │  │ jobs, steps,     │  │ :3005)           │
-│ addresses       │  │ menu            │  │ orders, payment   │  │ messages         │  │                  │
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────────┐  ┌─────────────────┐
+│ Customer Svc    │  │ Restaurant Svc  │  │ Order Service   │  │ Workflow Service │  │ Search (gateway │
+│ :3001           │  │ :3002           │  │ :3003           │  │ :3004            │  │ stub / service  │
+│ profile,        │  │ onboarding,     │  │ cart, checkout, │  │ jobs, steps,     │  │ :3005)          │
+│ addresses       │  │ menu            │  │ orders, payment │  │ messages         │  │                 │
 └─────────────────┘  └─────────────────┘  └─────────────────┘  └────────┬─────────┘  └─────────────────┘
-                                                                           │
-         ┌────────────────────────────────────────────────────────────────┼─────────────────────────────┐
-         │                                  │                              │                             │
-         ▼                                  ▼                              ▼                             ▼
+                                                                        │
+         ┌──────────────────────────────────────────────────────────────┼───────────────────┐
+         │                      │                    │                  │                   │
+         ▼                      ▼                    ▼                  ▼                   ▼
 ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
 │ LLM Service     │  │ MCP Service     │  │ Personalization │  │ Temporal        │  │ Infra           │
 │ :3006           │  │ :3007           │  │ :3008           │  │ (worker +       │  │ Postgres, Redis,│
-│ intent, vector  │  │ Swiggy/Zomato/  │  │ preferences,    │  │ server :7233)  │  │ Neo4j, Qdrant,  │
+│ intent, vector  │  │ Swiggy/Zomato/  │  │ preferences,    │  │ server :7233)   │  │ Neo4j, Qdrant,  │
 │ cache           │  │ ONDC routing    │  │ session cache   │  │                 │  │ ES, Kafka       │
 └─────────────────┘  └─────────────────┘  └─────────────────┘  └─────────────────┘  └─────────────────┘
 ```
