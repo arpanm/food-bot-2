@@ -68,8 +68,8 @@ A multi-agent food ordering platform with AI-powered chat, search, cart, orders,
     └─────────────────────┬────────────────────┘
                           │
          ┌────────────────┼─────────────────────────────────────────────────────────────────┐
-         │                              │                               │                   │
-         ▼                              ▼                               ▼                   ▼
+         │                │                        │                      │                 │
+         ▼                ▼                        ▼                      ▼                 ▼
 ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────────┐  ┌─────────────────┐
 │ Customer Svc    │  │ Restaurant Svc  │  │ Order Service   │  │ Workflow Service │  │ Search (gateway │
 │ :3001           │  │ :3002           │  │ :3003           │  │ :3004            │  │ stub / service  │
