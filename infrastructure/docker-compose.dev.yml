@@ -1,0 +1,33 @@
+# Food Bot 2 - Dev overrides (bind mounts, lower resources)
+# Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+
+services:
+  elasticsearch:
+    environment:
+      ES_JAVA_OPTS: "-Xms256m -Xmx256m"
+
+  postgres:
+    ports:
+      - "5432:5432"
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  neo4j:
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+
+  qdrant:
+    ports:
+      - "6333:6333"
+
+  kafka:
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+
+  temporal:
+    ports:
+      - "7233:7233"

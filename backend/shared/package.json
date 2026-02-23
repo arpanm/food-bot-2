@@ -1,0 +1,25 @@
+{
+  "name": "@food-bot/shared",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext ts",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "class-validator": "^0.14.1",
+    "class-transformer": "^0.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "~5.6.0",
+    "eslint": "^9.0.0"
+  },
+  "peerDependencies": {
+    "@food-bot/types": "*"
+  }
+}

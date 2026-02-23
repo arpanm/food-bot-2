@@ -1,0 +1,19 @@
+{
+  "name": "@food-bot/mock-zomato-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mock Zomato MCP server for testing",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "lint": "eslint src --ext ts",
+    "clean": "rm -rf dist node_modules"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "~5.6.0",
+    "tsx": "^4.19.0",
+    "eslint": "^9.0.0"
+  }
+}

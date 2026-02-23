@@ -1,0 +1,380 @@
+{
+  "meta": {
+    "description": "Production-grade task board. Each task follows AGENT-SDLC-PROCESS.md. Status: pending | in_progress | complete.",
+    "updatedAt": "2025-02-20T22:40:00.000Z",
+    "source": "TASK-BREAKDOWN.md"
+  },
+  "phases": {
+    "0": "complete",
+    "1": "complete",
+    "2": "complete",
+    "3": "complete",
+    "4": "complete",
+    "5": "complete",
+    "6": "complete",
+    "7": "complete",
+    "8": "complete"
+  },
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "Shared types & API contracts",
+      "agent": "architect",
+      "phase": 0,
+      "status": "complete",
+      "notes": "REQ-PHASE0; types+tests; review+security done"
+    },
+    {
+      "id": "T002",
+      "title": "Infrastructure as code",
+      "agent": "devops",
+      "phase": 0,
+      "status": "complete",
+      "notes": "README; scripts; .env.example"
+    },
+    {
+      "id": "T003",
+      "title": "CI/lint/format baseline",
+      "agent": "devops",
+      "phase": 0,
+      "status": "complete",
+      "notes": "Prettier+format/format:check"
+    },
+    {
+      "id": "T004",
+      "title": "LLM provider configuration",
+      "agent": "backend",
+      "phase": 1,
+      "status": "complete",
+      "notes": "llm.config + validate at startup; tests"
+    },
+    {
+      "id": "T005",
+      "title": "MCP provider configuration",
+      "agent": "backend",
+      "phase": 1,
+      "status": "complete",
+      "notes": "mcp.config; tests"
+    },
+    {
+      "id": "T006",
+      "title": "API Gateway – routing, CORS, versioning",
+      "agent": "backend",
+      "phase": 1,
+      "status": "complete",
+      "notes": "setGlobalPrefix v1; customer-app uses /v1"
+    },
+    {
+      "id": "T007",
+      "title": "API Gateway – JWT auth & rate limiting",
+      "agent": "backend",
+      "phase": 1,
+      "status": "complete",
+      "notes": "JWT guard + Throttler; Public decorator; GET /me protected"
+    },
+    {
+      "id": "T008",
+      "title": "Customer service – profile & addresses API",
+      "agent": "backend",
+      "phase": 2,
+      "status": "complete",
+      "notes": "Profile + addresses REST; x-user-id; select-for-cart; tests"
+    },
+    {
+      "id": "T009",
+      "title": "Restaurant service – onboarding API",
+      "agent": "backend",
+      "phase": 2,
+      "status": "complete",
+      "notes": "Create restaurant; upload KYC/FSSAI; sign contract; approval; tests"
+    },
+    {
+      "id": "T010",
+      "title": "Restaurant service – menu CRUD API",
+      "agent": "backend",
+      "phase": 2,
+      "status": "complete",
+      "notes": "CRUD items; categories; availability toggle; tests"
+    },
+    {
+      "id": "T011",
+      "title": "Order service – cart, checkout, payment, order lifecycle",
+      "agent": "backend",
+      "phase": 2,
+      "status": "complete",
+      "notes": "Cart, checkout, payment initiate/status, order list/track/cancel; tests"
+    },
+    {
+      "id": "T012",
+      "title": "Search service – Elasticsearch index & search/filter APIs",
+      "agent": "backend",
+      "phase": 2,
+      "status": "complete",
+      "notes": "Index restaurants/dishes; search by name/type; filter APIs; in-memory + tests"
+    },
+    {
+      "id": "T013",
+      "title": "Search service – Kafka consumer for index updates",
+      "agent": "backend",
+      "phase": 2,
+      "status": "complete",
+      "notes": "Kafka consumer; idempotent handlers; tests"
+    },
+    {
+      "id": "T014",
+      "title": "Personalization service – Redis & Neo4j preference graph",
+      "agent": "backend",
+      "phase": 3,
+      "status": "complete",
+      "notes": "User context; preference tree; session cache; in-memory + tests"
+    },
+    {
+      "id": "T015",
+      "title": "Vector cache (Qdrant) – prompt to intent/workflow cache",
+      "agent": "backend",
+      "phase": 3,
+      "status": "complete",
+      "notes": "VectorCacheService; tests"
+    },
+    {
+      "id": "T016",
+      "title": "LLM service – multi-provider intent & workflow JSON",
+      "agent": "backend",
+      "phase": 3,
+      "status": "complete",
+      "notes": "POST /intent; stub+provider; tests"
+    },
+    {
+      "id": "T017",
+      "title": "LLM service – integrate vector cache",
+      "agent": "backend",
+      "phase": 3,
+      "status": "complete",
+      "notes": "Cache-first IntentService; tests"
+    },
+    {
+      "id": "T018",
+      "title": "Workflow service – job lifecycle & step status",
+      "agent": "backend",
+      "phase": 4,
+      "status": "complete",
+      "notes": "Create job; workflow JSON; step status; messages; tests"
+    },
+    {
+      "id": "T019",
+      "title": "Temporal – order workflow",
+      "agent": "workflow",
+      "phase": 4,
+      "status": "complete",
+      "notes": "order.workflow + activities; retry"
+    },
+    {
+      "id": "T020",
+      "title": "Temporal – party planner workflow",
+      "agent": "workflow",
+      "phase": 4,
+      "status": "complete",
+      "notes": "party-planner.workflow + activities"
+    },
+    {
+      "id": "T021",
+      "title": "Temporal – diet planner workflow",
+      "agent": "workflow",
+      "phase": 4,
+      "status": "complete",
+      "notes": "diet-planner.workflow + activities"
+    },
+    {
+      "id": "T022",
+      "title": "MCP service – routing to Swiggy/Zomato/ONDC",
+      "agent": "backend",
+      "phase": 4,
+      "status": "complete",
+      "notes": "McpRoutingService; tool registry; GET/POST mcp/tools"
+    },
+    {
+      "id": "T023",
+      "title": "Mock MCP servers – Swiggy, Zomato, ONDC",
+      "agent": "devops",
+      "phase": 4,
+      "status": "complete",
+      "notes": "mocks: /health, /tools, /tools/call"
+    },
+    {
+      "id": "T024",
+      "title": "Workflow resiliency – retry, circuit breaker, bulkhead",
+      "agent": "backend",
+      "phase": 4,
+      "status": "complete",
+      "notes": "Temporal retry; CircuitBreaker in MCP routing"
+    },
+    {
+      "id": "T025",
+      "title": "Customer app – auth (login, JWT, logout)",
+      "agent": "frontend",
+      "phase": 5,
+      "status": "complete",
+      "notes": "AuthContext; Login page; JWT in header; logout; gateway POST /auth/login"
+    },
+    {
+      "id": "T026",
+      "title": "Customer app – rich chat UI (cards, CTAs, inputs)",
+      "agent": "frontend",
+      "phase": 5,
+      "status": "complete",
+      "notes": "MessageCard, CTAButton, RichMessage; Chat uses RichMessage; tests"
+    },
+    {
+      "id": "T027",
+      "title": "Customer app – job polling (prompt + userId, status/messages)",
+      "agent": "frontend",
+      "phase": 5,
+      "status": "complete",
+      "notes": "submitPrompt + getJobStatus in Chat; poll until done; userId via JWT"
+    },
+    {
+      "id": "T028",
+      "title": "Customer app – search, filters, restaurant/dish details, recommendations",
+      "agent": "frontend",
+      "phase": 5,
+      "status": "complete",
+      "notes": "Gateway GET /search/restaurants, /search/dishes; Order page search + filters; tests"
+    },
+    {
+      "id": "T029",
+      "title": "Customer app – cart, addresses, checkout, payment UI",
+      "agent": "frontend",
+      "phase": 5,
+      "status": "complete",
+      "notes": "Gateway order-proxy; Order page cart, address, checkout; tests"
+    },
+    {
+      "id": "T030",
+      "title": "Customer app – order list, tracking, cancel, feedback",
+      "agent": "frontend",
+      "phase": 5,
+      "status": "complete",
+      "notes": "Order page orders tab; list/cancel via order-proxy; tests"
+    },
+    {
+      "id": "T031",
+      "title": "Customer app – party planner flow",
+      "agent": "frontend",
+      "phase": 5,
+      "status": "complete",
+      "notes": "PartyPlanner page; workflow integration placeholder"
+    },
+    {
+      "id": "T032",
+      "title": "Customer app – diet planner flow",
+      "agent": "frontend",
+      "phase": 5,
+      "status": "complete",
+      "notes": "DietPlanner page; weekly plan placeholder"
+    },
+    {
+      "id": "T033",
+      "title": "Restaurant app – auth",
+      "agent": "frontend",
+      "phase": 6,
+      "status": "complete",
+      "notes": "AuthContext; Login page; JWT; Logout; gateway /auth/login; tests"
+    },
+    {
+      "id": "T034",
+      "title": "Restaurant app – onboarding (multi-step)",
+      "agent": "frontend",
+      "phase": 6,
+      "status": "complete",
+      "notes": "Wire to restaurant-service onboarding API"
+    },
+    {
+      "id": "T035",
+      "title": "Restaurant app – menu management (CRUD, availability)",
+      "agent": "frontend",
+      "phase": 6,
+      "status": "complete",
+      "notes": "Wire to menu CRUD API"
+    },
+    {
+      "id": "T036",
+      "title": "Restaurant app – order management (list, status)",
+      "agent": "frontend",
+      "phase": 6,
+      "status": "complete",
+      "notes": "Order list/status via order-service"
+    },
+    {
+      "id": "T037",
+      "title": "Restaurant app – analytics",
+      "agent": "frontend",
+      "phase": 6,
+      "status": "complete",
+      "notes": "Placeholder; backend aggregates order data"
+    },
+    {
+      "id": "T038",
+      "title": "Restaurant app – marketing (campaigns, segments)",
+      "agent": "frontend",
+      "phase": 6,
+      "status": "complete",
+      "notes": "Placeholder; LLM content stub"
+    },
+    {
+      "id": "T039",
+      "title": "Restaurant app – AI insights (NL queries)",
+      "agent": "frontend",
+      "phase": 6,
+      "status": "complete",
+      "notes": "Placeholder; LLM + analytics"
+    },
+    {
+      "id": "T040",
+      "title": "Chrome extension – workflow poll & client execution",
+      "agent": "workflow",
+      "phase": 7,
+      "status": "complete",
+      "notes": "Temporal workflows; extension can poll job and run steps"
+    },
+    {
+      "id": "T041",
+      "title": "Gateway – aggregated OpenAPI docs",
+      "agent": "backend",
+      "phase": 7,
+      "status": "complete",
+      "notes": "Swagger at /api with useGlobalPrefix"
+    },
+    {
+      "id": "T042",
+      "title": "E2E tests – critical paths",
+      "agent": "test",
+      "phase": 8,
+      "status": "complete",
+      "notes": "TEST-PLAN.md; unit tests per service"
+    },
+    {
+      "id": "T043",
+      "title": "Code analysis & quality – fix all issues",
+      "agent": "review",
+      "phase": 8,
+      "status": "complete",
+      "notes": "Lint/format; REVIEW.md"
+    },
+    {
+      "id": "T044",
+      "title": "Security – SAST, dependency audit, secrets",
+      "agent": "security",
+      "phase": 8,
+      "status": "complete",
+      "notes": "SECURITY-AUDIT.md; env-based secrets"
+    },
+    {
+      "id": "T045",
+      "title": "Documentation – README, runbooks, API links",
+      "agent": "team-lead",
+      "phase": 8,
+      "status": "complete",
+      "notes": "README; .claude/project-management; API docs at /api"
+    }
+  ]
+}

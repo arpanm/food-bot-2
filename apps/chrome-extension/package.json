@@ -1,0 +1,17 @@
+{
+  "name": "@food-bot/chrome-extension",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser-based workflow executor for Food Bot - polls workflow JSON and executes client-side",
+  "scripts": {
+    "build": "tsc && node scripts/build-extension.js",
+    "dev": "tsc --watch",
+    "lint": "eslint src --ext ts",
+    "clean": "rm -rf dist node_modules"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "typescript": "~5.6.0",
+    "eslint": "^9.0.0"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "food-bot-2",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Claude multi-agent food ordering platform with Capacitor+React frontends and NestJS backend",
+  "scripts": {
+    "reinstall": "rm -rf node_modules package-lock.json && npm install",
+    "build": "npx turbo run build",
+    "dev": "npx turbo run dev",
+    "dev:apps": "npx turbo run dev --filter=@food-bot/customer-app --filter=@food-bot/restaurant-app --filter=@food-bot/api-gateway",
+    "test": "npx turbo run test",
+    "test:report": "node scripts/generate-test-report.js",
+    "lint": "npx turbo run lint",
+    "format": "prettier --write \"**/*.{js,ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,ts,tsx,json,md}\"",
+    "clean": "npx turbo run clean && rm -rf node_modules",
+    "infra:up": "cd infrastructure && docker-compose up -d",
+    "infra:down": "cd infrastructure && docker-compose down",
+    "orchestrate": "bash scripts/orchestrate.sh",
+    "setup-infra": "bash scripts/setup-infra.sh",
+    "seed-data": "bash scripts/seed-data.sh"
+  },
+  "workspaces": [
+    "apps/*",
+    "backend/*",
+    "packages/*",
+    "temporal",
+    "mocks/*"
+  ],
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "prettier": "^3.4.2"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "npm@10.0.0"
+}

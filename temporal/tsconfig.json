@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": ".",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": ["ES2022"]
+  },
+  "include": ["workflows/**/*", "activities/**/*", "src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
