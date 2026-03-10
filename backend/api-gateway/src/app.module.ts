@@ -11,12 +11,18 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { ChatController, JobsController } from './chat.controller';
 import { OrdersController } from './orders.controller';
 import { RestaurantsController } from './restaurants.controller';
+import { NotificationsModule } from './notifications/notifications.module';
 import { OrderProxyModule } from './order-proxy/order-proxy.module';
 import { SearchController } from './search.controller';
+import { TicketsProxyModule } from './tickets-proxy/tickets-proxy.module';
+import { WorkflowProxyModule } from './workflow-proxy/workflow-proxy.module';
 
 @Module({
   imports: [
     OrderProxyModule,
+    NotificationsModule,
+    TicketsProxyModule,
+    WorkflowProxyModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'dev-secret-change-in-production',

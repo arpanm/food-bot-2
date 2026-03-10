@@ -31,6 +31,7 @@ export class MenuService {
       category: dto.category,
       priceCents: dto.priceCents,
       available: dto.available ?? true,
+      imageUrl: dto.imageUrl,
     };
     this.items.set(id, item);
     return { ...item };
@@ -48,6 +49,7 @@ export class MenuService {
     if (dto.category !== undefined) item.category = dto.category;
     if (dto.priceCents !== undefined) item.priceCents = dto.priceCents;
     if (dto.available !== undefined) item.available = dto.available;
+    if (dto.imageUrl !== undefined) item.imageUrl = dto.imageUrl;
     this.items.set(itemId, item);
     return { ...item };
   }

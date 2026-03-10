@@ -7,7 +7,8 @@ describe('App', () => {
     render(<App />);
     expect(screen.getByText(/Food Bot – Customer/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /chat/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /order/i })).toBeInTheDocument();
+    const orderLinks = screen.getAllByRole('link', { name: /order/i });
+    expect(orderLinks.length).toBeGreaterThanOrEqual(1);
     expect(screen.getByRole('link', { name: /party planner/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /diet planner/i })).toBeInTheDocument();
   });

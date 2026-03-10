@@ -16,6 +16,7 @@ export class MenuItemDto {
   category!: string;
   priceCents!: number;
   available!: boolean;
+  imageUrl?: string;
 }
 
 export class CreateMenuItemDto {
@@ -24,6 +25,7 @@ export class CreateMenuItemDto {
   @IsString() @MinLength(1) @MaxLength(100) category!: string;
   @IsNumber() @Min(0) priceCents!: number;
   @IsOptional() @IsBoolean() available?: boolean;
+  @IsOptional() @IsString() @MaxLength(2000) imageUrl?: string;
 }
 
 export class UpdateMenuItemDto {
@@ -32,4 +34,5 @@ export class UpdateMenuItemDto {
   @IsOptional() @IsString() @MinLength(1) @MaxLength(100) category?: string;
   @IsOptional() @IsNumber() @Min(0) priceCents?: number;
   @IsOptional() @IsBoolean() available?: boolean;
+  @IsOptional() @IsString() @MaxLength(2000) imageUrl?: string;
 }

@@ -5,6 +5,7 @@ import type {
   CheckoutDto,
   OrderDto,
   OrderStatus,
+  OrderTimelineEventDto,
   UpdateCartItemDto,
 } from './dto/order.dto';
 
@@ -14,7 +15,7 @@ export class OrderService {
     string,
     { items: Map<string, AddToCartDto & { key: string }>; selectedAddressId: string | null }
   >();
-  private orders = new Map<string, OrderDto>();
+  private orders = new Map<string, OrderDto & { timeline: OrderTimelineEventDto[] }>();
   private payments = new Map<
     string,
     { orderId: string; status: 'pending' | 'completed' | 'failed' }
@@ -95,7 +96,8 @@ export class OrderService {
     const totalCents = cart.totalCents;
     const id = `ord-${this.nextOrderId++}`;
     const now = new Date().toISOString();
-    const order: OrderDto = {
+    const timeline: OrderTimelineEventDto[] = [{ status: 'placed', at: now }];
+    const order: OrderDto & { timeline: OrderTimelineEventDto[] } = {
       id,
       userId,
       restaurantId,
@@ -106,19 +108,53 @@ export class OrderService {
       addressId: dto.selectedAddressId,
       createdAt: now,
       updatedAt: now,
+      timeline,
+      atRisk: false,
     };
     this.orders.set(id, order);
     this.carts.set(userId, { items: new Map(), selectedAddressId: null });
-    return { ...order };
+    return this.toOrderDto(order);
+  }
+
+  private toOrderDto(o: OrderDto & { timeline: OrderTimelineEventDto[] }): OrderDto {
+    const atRisk = this.computeAtRisk(o);
+    return {
+      ...o,
+      timeline: o.timeline,
+      atRisk,
+    };
+  }
+
+  private computeAtRisk(o: OrderDto & { timeline: OrderTimelineEventDto[] }): boolean {
+    const placedAt = new Date(o.createdAt).getTime();
+    const now = Date.now();
+    const fifteenMin = 15 * 60 * 1000;
+    if (o.status === 'placed' && now - placedAt > fifteenMin) return true;
+    return false;
   }
 
   listOrders(userId: string): OrderDto[] {
-    return Array.from(this.orders.values()).filter((o) => o.userId === userId);
+    return Array.from(this.orders.values())
+      .filter((o) => o.userId === userId)
+      .map((o) => this.toOrderDto(o));
   }
 
   getOrder(userId: string, orderId: string): OrderDto | null {
     const o = this.orders.get(orderId);
-    return o && o.userId === userId ? o : null;
+    if (!o || o.userId !== userId) return null;
+    return this.toOrderDto(o);
+  }
+
+  listOrdersByRestaurant(restaurantId: string): OrderDto[] {
+    return Array.from(this.orders.values())
+      .filter((o) => o.restaurantId === restaurantId)
+      .map((o) => this.toOrderDto(o));
+  }
+
+  getOrderByRestaurant(restaurantId: string, orderId: string): OrderDto | null {
+    const o = this.orders.get(orderId);
+    if (!o || o.restaurantId !== restaurantId) return null;
+    return this.toOrderDto(o);
   }
 
   getOrderOrThrow(userId: string, orderId: string): OrderDto {
@@ -127,20 +163,42 @@ export class OrderService {
     return o;
   }
 
-  updateOrderStatus(orderId: string, status: OrderStatus): OrderDto {
+  setOrderCustomer(orderId: string, customerName: string, customerPhone: string): OrderDto {
     const o = this.orders.get(orderId);
     if (!o) throw new NotFoundException('Order not found');
+    o.customerName = customerName;
+    o.customerPhone = customerPhone;
+    return this.toOrderDto(o);
+  }
+
+  setOrderEta(orderId: string, eta: string): OrderDto {
+    const o = this.orders.get(orderId);
+    if (!o) throw new NotFoundException('Order not found');
+    o.eta = eta;
+    return this.toOrderDto(o);
+  }
+
+  updateOrderStatus(orderId: string, status: OrderStatus, note?: string): OrderDto {
+    const o = this.orders.get(orderId);
+    if (!o) throw new NotFoundException('Order not found');
+    const at = new Date().toISOString();
     o.status = status;
-    o.updatedAt = new Date().toISOString();
-    return { ...o };
+    o.updatedAt = at;
+    o.timeline = o.timeline || [];
+    o.timeline.push({ status, at, note });
+    return this.toOrderDto(o);
   }
 
   cancelOrder(userId: string, orderId: string): OrderDto {
-    const o = this.getOrderOrThrow(userId, orderId);
-    if (o.status !== 'placed') throw new BadRequestException('Only placed orders can be cancelled');
-    o.status = 'cancelled';
-    o.updatedAt = new Date().toISOString();
-    return { ...o };
+    const raw = this.orders.get(orderId);
+    if (!raw || raw.userId !== userId) throw new NotFoundException('Order not found');
+    if (raw.status !== 'placed') throw new BadRequestException('Only placed orders can be cancelled');
+    const at = new Date().toISOString();
+    raw.status = 'cancelled';
+    raw.updatedAt = at;
+    raw.timeline = raw.timeline || [];
+    raw.timeline.push({ status: 'cancelled', at });
+    return this.toOrderDto(raw);
   }
 
   initiatePayment(orderId: string, _amountCents: number): { paymentId: string; status: string } {

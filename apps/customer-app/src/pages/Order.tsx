@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   searchRestaurants,
   searchDishes,
@@ -279,15 +280,20 @@ export default function Order() {
                     ₹{(o.totalCents / 100).toFixed(0)} ·{' '}
                     {new Date(o.createdAt).toLocaleDateString()}
                   </div>
-                  {o.status === 'placed' && (
+                  <div className="mt-2 flex gap-2">
+                    <Link to={`/order/track/${o.id}`} className="text-emerald-600 text-sm hover:underline">
+                      Track order
+                    </Link>
+                    {o.status === 'placed' && (
                     <button
                       type="button"
                       onClick={() => handleCancelOrder(o.id)}
-                      className="mt-2 text-red-600 text-sm"
+                      className="text-red-600 text-sm hover:underline"
                     >
                       Cancel order
                     </button>
-                  )}
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>

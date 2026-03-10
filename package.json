@@ -6,7 +6,7 @@
   "scripts": {
     "reinstall": "rm -rf node_modules package-lock.json && npm install",
     "build": "npx turbo run build",
-    "dev": "npx turbo run dev",
+    "dev": "npx turbo run dev --concurrency=21",
     "dev:apps": "npx turbo run dev --filter=@food-bot/customer-app --filter=@food-bot/restaurant-app --filter=@food-bot/api-gateway",
     "test": "npx turbo run test",
     "test:report": "node scripts/generate-test-report.js",

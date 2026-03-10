@@ -44,6 +44,10 @@ export default function Chat() {
     setLoading(true);
     try {
       const { jobId } = await submitPrompt(text);
+      // Notify Chrome extension so it can fetch and execute the workflow
+      if (typeof window !== 'undefined' && window.postMessage) {
+        window.postMessage({ type: 'foodbot-job-created', jobId }, '*');
+      }
       await pollJob(jobId);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Something went wrong.');

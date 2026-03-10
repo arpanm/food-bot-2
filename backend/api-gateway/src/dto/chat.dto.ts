@@ -22,8 +22,11 @@ export class ChatMessageDto {
 }
 
 export class JobStatusResponseDto {
-  @ApiProperty({ enum: ['pending', 'completed', 'failed'], description: 'Current job status' })
-  status!: 'pending' | 'completed' | 'failed';
+  @ApiProperty({
+    enum: ['pending', 'running', 'completed', 'failed'],
+    description: 'Current job status',
+  })
+  status!: 'pending' | 'running' | 'completed' | 'failed';
 
   @ApiProperty({
     type: [ChatMessageDto],

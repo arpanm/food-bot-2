@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -11,6 +12,7 @@ import {
 import {
   AddToCartDto,
   CheckoutDto,
+  OrderStatus,
   PaymentInitiateDto,
   UpdateCartItemDto,
 } from './dto/order.dto';
@@ -81,6 +83,64 @@ export class OrdersController {
   @Post(':id/cancel')
   cancel(@Headers(X_USER_ID) xUserId: string | undefined, @Param('id') id: string) {
     return this.order.cancelOrder(uid(xUserId), id);
+  }
+}
+
+const ORDER_STATUSES: OrderStatus[] = ['placed', 'preparing', 'out_for_delivery', 'delivered', 'cancelled'];
+
+@Controller('restaurant-orders')
+export class RestaurantOrdersController {
+  constructor(private readonly order: OrderService) {}
+
+  @Get(':restaurantId')
+  list(@Param('restaurantId') restaurantId: string) {
+    return this.order.listOrdersByRestaurant(restaurantId);
+  }
+
+  @Get(':restaurantId/orders/:orderId')
+  get(
+    @Param('restaurantId') restaurantId: string,
+    @Param('orderId') orderId: string
+  ) {
+    const o = this.order.getOrderByRestaurant(restaurantId, orderId);
+    if (!o) throw new NotFoundException('Order not found');
+    return o;
+  }
+
+  @Patch(':restaurantId/orders/:orderId/status')
+  updateStatus(
+    @Param('restaurantId') restaurantId: string,
+    @Param('orderId') orderId: string,
+    @Body() body: { status: string; note?: string }
+  ) {
+    const o = this.order.getOrderByRestaurant(restaurantId, orderId);
+    if (!o) throw new NotFoundException('Order not found');
+    if (!ORDER_STATUSES.includes(body.status as (typeof ORDER_STATUSES)[number])) {
+      throw new BadRequestException('Invalid status');
+    }
+    return this.order.updateOrderStatus(orderId, body.status as OrderStatus, body.note);
+  }
+
+  @Patch(':restaurantId/orders/:orderId/customer')
+  setCustomer(
+    @Param('restaurantId') restaurantId: string,
+    @Param('orderId') orderId: string,
+    @Body() body: { customerName: string; customerPhone: string }
+  ) {
+    const o = this.order.getOrderByRestaurant(restaurantId, orderId);
+    if (!o) throw new NotFoundException('Order not found');
+    return this.order.setOrderCustomer(orderId, body.customerName, body.customerPhone);
+  }
+
+  @Patch(':restaurantId/orders/:orderId/eta')
+  setEta(
+    @Param('restaurantId') restaurantId: string,
+    @Param('orderId') orderId: string,
+    @Body() body: { eta: string }
+  ) {
+    const o = this.order.getOrderByRestaurant(restaurantId, orderId);
+    if (!o) throw new NotFoundException('Order not found');
+    return this.order.setOrderEta(orderId, body.eta);
   }
 }
 

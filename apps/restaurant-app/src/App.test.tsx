@@ -31,12 +31,14 @@ describe('App', () => {
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /orders/i }));
     expect(screen.getByText(/ord-101/i)).toBeInTheDocument();
-    expect(screen.getByText(/preparing/i)).toBeInTheDocument();
+    expect(screen.getByText(/ord-102/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Preparing/i).length).toBeGreaterThan(0);
   });
 
-  it('Analytics tab shows placeholder/chart', () => {
+  it('Analytics tab shows chart and suggestions', () => {
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: /analytics/i }));
-    expect(screen.getByText(/Revenue and popular items.*coming soon/i)).toBeInTheDocument();
+    expect(screen.getByText(/Revenue trend/i)).toBeInTheDocument();
+    expect(screen.getByText(/Suggestions/i)).toBeInTheDocument();
   });
 });

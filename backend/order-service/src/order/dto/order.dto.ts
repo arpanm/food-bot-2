@@ -33,6 +33,12 @@ export class CheckoutDto {
   @IsString() @MinLength(1) selectedAddressId!: string;
 }
 
+export class OrderTimelineEventDto {
+  status!: OrderStatus;
+  at!: string;
+  note?: string;
+}
+
 export class OrderDto {
   id!: string;
   userId!: string;
@@ -45,6 +51,16 @@ export class OrderDto {
   paymentId?: string;
   createdAt!: string;
   updatedAt!: string;
+  /** Customer display name */
+  customerName?: string;
+  /** Customer phone for call/chat */
+  customerPhone?: string;
+  /** Status history for tracking */
+  timeline?: OrderTimelineEventDto[];
+  /** ETA ISO string (e.g. delivery) */
+  eta?: string;
+  /** True if order is past expected prep time or missing milestones */
+  atRisk?: boolean;
 }
 
 export class PaymentInitiateDto {

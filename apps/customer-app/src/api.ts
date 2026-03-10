@@ -126,3 +126,91 @@ export async function cancelOrder(orderId: string): Promise<unknown> {
   if (!res.ok) throw new Error(await res.text());
   return res.json();
 }
+
+export async function getOrder(orderId: string): Promise<{
+  id: string;
+  restaurantName: string;
+  status: string;
+  totalCents: number;
+  createdAt: string;
+  timeline?: Array<{ status: string; at: string }>;
+  eta?: string;
+}> {
+  const res = await fetch(`${API_V1}/order-proxy/orders/${orderId}`, { headers: getAuthHeader() });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export type NotificationItem = {
+  id: string;
+  type: string;
+  title: string;
+  body: string;
+  link?: string;
+  read: boolean;
+  createdAt: string;
+};
+
+export async function getNotifications(recipientId: string): Promise<NotificationItem[]> {
+  const params = new URLSearchParams({ audience: 'customer', recipientId });
+  const res = await fetch(`${API_V1}/notifications?${params}`, { headers: getAuthHeader() });
+  if (!res.ok) return [];
+  return res.json();
+}
+
+export async function markNotificationRead(id: string, recipientId: string): Promise<void> {
+  await fetch(`${API_V1}/notifications/${id}/read`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+    body: JSON.stringify({ audience: 'customer', recipientId }),
+  });
+}
+
+export async function markAllNotificationsRead(recipientId: string): Promise<void> {
+  await fetch(`${API_V1}/notifications/mark-all-read`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+    body: JSON.stringify({ audience: 'customer', recipientId }),
+  });
+}
+
+export async function listTickets(): Promise<
+  Array<{ id: string; subject: string; category: string; status: string; createdAt: string }>
+> {
+  const res = await fetch(`${API_V1}/tickets`, { headers: getAuthHeader() });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export async function getTicket(ticketId: string): Promise<{
+  id: string;
+  subject: string;
+  category: string;
+  status: string;
+  messages: Array<{ sender: string; body: string; at: string }>;
+  createdAt: string;
+}> {
+  const res = await fetch(`${API_V1}/tickets/${ticketId}`, { headers: getAuthHeader() });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export async function createTicket(dto: { subject: string; category: string; message: string; restaurantId?: string }): Promise<{ id: string }> {
+  const res = await fetch(`${API_V1}/tickets`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+    body: JSON.stringify(dto),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+export async function replyTicket(ticketId: string, message: string): Promise<unknown> {
+  const res = await fetch(`${API_V1}/tickets/${ticketId}/reply`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+    body: JSON.stringify({ message }),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
